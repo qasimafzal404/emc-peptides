@@ -57,7 +57,7 @@ export default function Home() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#07080b]">
+    <div className="min-h-screen flex flex-col bg-[#f4f1ea]">
       {/* 1. Announcement Marquee Ticker */}
       <TopTicker />
 
