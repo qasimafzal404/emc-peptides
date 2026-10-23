@@ -2,131 +2,107 @@
 
 import React from "react";
 import Image from "next/image";
-import { ArrowRight, CheckCircle2, FileText, FlaskConical, Sparkles, Activity } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, FileText, CheckCircle2 } from "lucide-react";
 
 interface HeroProps {
-  onAddToCart: (productId: string) => void;
-  onSelectProduct: (productId: string) => void;
+  onExplore: () => void;
+  onAddToCart: () => void;
 }
 
-export function Hero({ onAddToCart, onSelectProduct }: HeroProps) {
+export function Hero({ onExplore, onAddToCart }: HeroProps) {
   return (
-    <section className="relative overflow-hidden pt-12 pb-24 lg:pt-20 lg:pb-32 bg-gradient-to-b from-[#07090e] via-[#090e17] to-[#07090e]">
-      {/* Background radial glow effect */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/3 right-10 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+    <section className="relative overflow-hidden pt-16 pb-24 lg:pt-28 lg:pb-36 bg-[#07080b]">
+      {/* Subtle ambient lighting */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-cyan-500/10 rounded-full blur-[160px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Left Hero Column: Copy & Actions */}
-          <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-            {/* Pill Header */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono tracking-wider shadow-[0_0_15px_rgba(0,240,255,0.15)]">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span>OCTOBER 2026 BATCH DISPATCH ACTIVE</span>
+          {/* Left Column: AminoHaus Style Typography */}
+          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/10 text-xs font-mono text-cyan-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              <span>LABORATORY INQUIRY PROTOCOL</span>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08]">
-              SYNTHESIZED FOR{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 cyan-text-glow">
-                UNCOMPROMISING
-              </span>{" "}
-              PRECISION.
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05]">
+              Precision, <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+                Refined.
+              </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              EMC Peptides delivers analytically verified research compounds with certified chromatographic purity profiles, vacuum lyophilization, and transparent lot documentation.
+            <p className="text-lg sm:text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+              EMC Peptides delivers carefully sourced research compounds with transparent quality standards and uncompromising presentation.
             </p>
 
-            {/* Key Value Points */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-left pt-2 max-w-lg mx-auto lg:mx-0">
-              <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 border border-slate-800 p-2.5 rounded-lg">
-                <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-                <span>&ge; 99.0% HPLC Standard</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 border border-slate-800 p-2.5 rounded-lg">
-                <FlaskConical className="w-4 h-4 text-cyan-400 shrink-0" />
-                <span>Sterile Lyophilized</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 border border-slate-800 p-2.5 rounded-lg col-span-2 sm:col-span-1">
-                <FileText className="w-4 h-4 text-cyan-400 shrink-0" />
-                <span>Lot HPLC/MS On File</span>
-              </div>
-            </div>
-
-            {/* Call to Actions */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
               <a
-                href="#compounds"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-sm tracking-wide shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_35px_rgba(0,240,255,0.6)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group"
+                href="#bestsellers"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-white hover:bg-slate-200 text-slate-950 font-semibold text-sm transition-all tracking-wide shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2 group"
               >
-                <span>Browse Research Catalog</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <span>Explore Compounds</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
 
               <a
-                href="#coa-lookup"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 text-slate-200 border border-slate-700/80 hover:border-cyan-500/50 font-semibold text-sm transition-all flex items-center justify-center gap-2"
+                href="#coa"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/10 text-sm font-medium transition-all flex items-center justify-center gap-2"
               >
                 <FileText className="w-4 h-4 text-cyan-400" />
-                <span>Verify Batch Records</span>
+                <span>View certificates</span>
               </a>
+            </div>
+
+            {/* Micro specs */}
+            <div className="pt-6 border-t border-white/5 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs font-mono text-slate-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                <span>≥99.0% HPLC Assay</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                <span>Argon Backfilled Cake</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                <span>Published Lot COA</span>
+              </div>
             </div>
           </div>
 
-          {/* Right Hero Column: 3D Mockup Specimen Showcase */}
-          <div className="lg:col-span-5 flex justify-center relative">
-            
-            {/* Ambient glow container */}
-            <div className="relative group w-full max-w-[420px] aspect-square flex items-center justify-center">
+          {/* Right Column: 3D Floating Mockup in Loop */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+            <div className="relative w-full max-w-[420px] aspect-square flex items-center justify-center">
               
-              {/* Animated outer cyber ring */}
-              <div className="absolute inset-0 rounded-full border border-cyan-500/20 scale-105 animate-[spin_40s_linear_infinite]" />
-              <div className="absolute inset-2 rounded-full border border-dashed border-cyan-400/10 scale-95" />
+              {/* Radial Cyan Glow Behind Vial */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-blue-500/0 rounded-full blur-2xl pointer-events-none scale-90" />
               
-              {/* High-impact Mockup Image */}
-              <div className="relative z-10 w-full h-full p-4 flex items-center justify-center filter drop-shadow-[0_20px_45px_rgba(0,240,255,0.25)]">
+              {/* 3D Floating Mockup Image with Infinite Loop Animation */}
+              <div className="relative z-10 floating-vial cursor-pointer" onClick={onAddToCart}>
                 <Image
                   src="/emc-tesamorelin.png"
-                  alt="EMC Peptides Tesamorelin 5 MG Research Compound Vial Mockup"
+                  alt="EMC Peptides Tesamorelin 5 MG Mockup"
                   width={420}
                   height={420}
                   priority
-                  className="object-contain max-h-[380px] w-auto transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain max-h-[380px] w-auto filter drop-shadow-[0_20px_35px_rgba(0,240,255,0.3)] transition-transform duration-300 hover:scale-105"
                 />
               </div>
 
-              {/* Floating Analytical Spec Card */}
-              <div className="absolute -bottom-4 -left-4 sm:left-0 z-20 glass-panel p-3.5 rounded-xl border border-cyan-500/40 shadow-2xl max-w-[210px] space-y-1.5 animate-bounce-subtle">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-cyan-400 font-semibold">SPECIMEN SPEC</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                </div>
-                <div className="font-mono text-xs font-bold text-white">TESAMORELIN 5 MG</div>
-                <div className="flex items-center justify-between text-[11px] text-slate-300">
-                  <span>Purity:</span>
-                  <span className="font-bold text-cyan-300">99.4% HPLC</span>
-                </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-300">
-                  <span>Lot Ref:</span>
-                  <span className="font-mono text-slate-400">EMC-7402-A</span>
-                </div>
-              </div>
+              {/* Pulsating 3D Floor Shadow */}
+              <div className="absolute bottom-6 w-48 h-6 bg-cyan-400/25 rounded-full blur-xl vial-shadow pointer-events-none" />
 
-              {/* Floating Quick Action Badge */}
-              <div className="absolute -top-3 -right-3 z-20 glass-panel px-3 py-2 rounded-xl border border-cyan-500/30 flex items-center gap-2 shadow-xl">
-                <Activity className="w-4 h-4 text-cyan-400 animate-pulse" />
-                <div className="text-left">
-                  <div className="text-[9px] font-mono text-slate-400 uppercase">Status</div>
-                  <div className="text-xs font-bold text-white">In Laboratory Stock</div>
-                </div>
+              {/* Floating Spec Tag Overlay */}
+              <div className="absolute bottom-2 -left-2 z-20 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-white/10 shadow-2xl backdrop-blur-md text-left font-mono">
+                <div className="text-[10px] text-cyan-400 font-semibold tracking-wider">FEATURED COMPOUND</div>
+                <div className="text-xs font-bold text-white">TESAMORELIN · 5 MG</div>
+                <div className="text-[10px] text-slate-400">Purity: 99.4% HPLC · Lot EMC-7402-A</div>
               </div>
 
             </div>
-
           </div>
 
         </div>

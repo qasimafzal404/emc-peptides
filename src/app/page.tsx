@@ -1,21 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
+import { TopTicker } from "@/components/TopTicker";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { StatsTicker } from "@/components/StatsTicker";
-import { ProductCatalog } from "@/components/ProductCatalog";
+import { BestSellers, BEST_SELLERS_LIST } from "@/components/BestSellers";
+import { AnatomySection } from "@/components/AnatomySection";
+import { JustAdded } from "@/components/JustAdded";
+import { ProcessSteps } from "@/components/ProcessSteps";
+import { ResearchFields } from "@/components/ResearchFields";
 import { CoaLookup } from "@/components/CoaLookup";
 import { TheStandard } from "@/components/TheStandard";
+import { ComparisonTable } from "@/components/ComparisonTable";
 import { FaqSection } from "@/components/FaqSection";
+import { ClosingCta } from "@/components/ClosingCta";
 import { Footer } from "@/components/Footer";
 import { CartDrawer, CartItem } from "@/components/CartDrawer";
 import { QuickViewModal } from "@/components/QuickViewModal";
-import { Product, PRODUCTS } from "@/data/products";
+import { Product } from "@/data/products";
 
 export default function Home() {
   const [cartItems, setCartItems] = useState<CartItem[]>([
-    { product: PRODUCTS[0], quantity: 1 }, // Default with 1 Tesamorelin 5mg in cart
+    { product: BEST_SELLERS_LIST[0], quantity: 1 }, // Default: 1x Tesamorelin 5MG
   ]);
   const [cartOpen, setCartOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -50,44 +56,67 @@ export default function Home() {
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#07090e]">
-      {/* Top Navbar */}
+    <div className="min-h-screen flex flex-col bg-[#07080b]">
+      {/* 1. Announcement Marquee Ticker */}
+      <TopTicker />
+
+      {/* 2. Minimalist Navbar */}
       <Navbar
         cartCount={totalCartCount}
         onOpenCart={() => setCartOpen(true)}
       />
 
-      {/* Main Sections */}
       <main className="flex-1">
-        {/* 1. Hero with Mockup Display */}
+        {/* 3. Hero Section with 3D Floating Mockup in Loop */}
         <Hero
-          onAddToCart={() => handleAddToCart(PRODUCTS[0])}
-          onSelectProduct={() => setQuickViewProduct(PRODUCTS[0])}
+          onExplore={() => {
+            document.getElementById("bestsellers")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          onAddToCart={() => handleAddToCart(BEST_SELLERS_LIST[0])}
         />
 
-        {/* 2. Stats Ticker */}
-        <StatsTicker />
+        {/* 4. Most Requested. / Best Sellers */}
+        <div id="shop">
+          <BestSellers
+            onAddToCart={handleAddToCart}
+            onQuickView={(p) => setQuickViewProduct(p)}
+          />
+        </div>
 
-        {/* 3. Product Catalog with Category Tabs */}
-        <ProductCatalog
-          onAddToCart={handleAddToCart}
-          onQuickView={(p) => setQuickViewProduct(p)}
-        />
+        {/* 5. Inside the vial / Anatomy of Precision */}
+        <AnatomySection />
 
-        {/* 4. Lot Verification & COA Chromatogram Lookup */}
-        <CoaLookup />
+        {/* 6. Newly catalogued. / Just Added */}
+        <JustAdded />
 
-        {/* 5. Vial Hierarchy & The EMC Standard */}
+        {/* 7. Order to doorstep / Four Steps, Documented Throughout */}
+        <ProcessSteps />
+
+        {/* 8. Research catalogue / 04 fields / Choose a research direction */}
+        <ResearchFields />
+
+        {/* 9. Certificate of analysis / Every Lot, On Record */}
+        <div id="coa">
+          <CoaLookup />
+        </div>
+
+        {/* 10. The system doesn't move / Fixed across compounds */}
         <TheStandard />
 
-        {/* 6. FAQ Accordion */}
+        {/* 11. Why EMC Peptides / The Difference, Line by Line (Comparison Matrix) */}
+        <ComparisonTable />
+
+        {/* 12. Questions / Answers, without hedging (6 FAQs) */}
         <FaqSection />
+
+        {/* 13. Begin / Research Begins With Better Standards */}
+        <ClosingCta />
       </main>
 
-      {/* Footer */}
+      {/* 14. Footer with FDA disclaimer and accepted payment badges */}
       <Footer />
 
-      {/* Slide-out Cart Drawer */}
+      {/* Interactive Cart Slide-out Drawer */}
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
@@ -96,7 +125,7 @@ export default function Home() {
         onRemoveItem={handleRemoveItem}
       />
 
-      {/* Quick View Spec Modal */}
+      {/* Interactive Quick View Chemical Spec Modal */}
       <QuickViewModal
         product={quickViewProduct}
         onClose={() => setQuickViewProduct(null)}

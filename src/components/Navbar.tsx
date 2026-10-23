@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, ShieldCheck, Menu, X, ArrowUpRight } from "lucide-react";
+import { ShoppingBag, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   cartCount: number;
@@ -10,114 +10,95 @@ interface NavbarProps {
 }
 
 export function Navbar({ cartCount, onOpenCart }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80">
+    <header className="sticky top-0 z-40 w-full bg-[#07080b]/90 backdrop-blur-md border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-slate-900 border border-cyan-500/30 group-hover:border-cyan-400 transition-colors shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-              <span className="font-black text-cyan-400 tracking-tighter text-xl">EMC</span>
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00f0ff]" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold tracking-widest text-lg text-white group-hover:text-cyan-300 transition-colors">
-                EMC PEPTIDES
-              </span>
-              <span className="text-[10px] tracking-widest text-cyan-400 font-mono uppercase">
-                Analytical Grade Synthesis
-              </span>
-            </div>
+          
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="text-xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+              EMC PEPTIDES
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00f0ff]" />
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Links (Shop, COA, About, Partner Program, Contact) */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <Link href="#compounds" className="hover:text-cyan-400 transition-colors">
-              Compounds
+            <Link href="#bestsellers" className="hover:text-white transition-colors">
+              Shop
             </Link>
-            <Link href="#coa-lookup" className="hover:text-cyan-400 transition-colors flex items-center gap-1">
-              <span>Lot Verification</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-500/30 font-mono">COA</span>
+            <Link href="#coa" className="hover:text-white transition-colors">
+              COA
             </Link>
-            <Link href="#standard" className="hover:text-cyan-400 transition-colors">
-              The Standard
+            <Link href="#anatomy" className="hover:text-white transition-colors">
+              About
             </Link>
-            <Link href="#faq" className="hover:text-cyan-400 transition-colors">
+            <Link href="#process" className="hover:text-white transition-colors">
+              Process
+            </Link>
+            <Link href="#difference" className="hover:text-white transition-colors">
+              Why EMC
+            </Link>
+            <Link href="#faq" className="hover:text-white transition-colors">
               FAQ
             </Link>
           </nav>
 
-          {/* Right Action Buttons */}
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 text-[11px] font-mono text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-              <span>RESEARCH USE ONLY</span>
+          {/* Right Status & Cart */}
+          <div className="flex items-center gap-5">
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-white/10 text-xs font-mono text-slate-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Research use only</span>
             </div>
 
-            {/* Cart Trigger Button */}
+            {/* Cart Button */}
             <button
               onClick={onOpenCart}
-              className="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-850 text-slate-200 transition-all flex items-center gap-2 group"
-              aria-label="View shopping cart"
+              className="relative flex items-center gap-2 text-sm font-medium text-slate-200 hover:text-cyan-400 transition-colors p-2"
+              aria-label="View Cart"
             >
-              <ShoppingBag className="w-5 h-5 text-slate-300 group-hover:text-cyan-400 transition-colors" />
-              <span className="hidden sm:inline text-xs font-semibold tracking-wide">Basket</span>
-              {cartCount > 0 && (
-                <span className="flex items-center justify-center min-w-5 h-5 px-1.5 text-xs font-bold text-slate-950 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f0ff]">
-                  {cartCount}
-                </span>
-              )}
+              <ShoppingBag className="w-4 h-4" />
+              <span className="font-mono text-xs font-bold text-cyan-400">{cartCount}</span>
             </button>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile Toggle */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 text-slate-400 hover:text-white"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
+
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-800 bg-slate-950/95 backdrop-blur-xl px-4 py-6 space-y-4">
-          <Link
-            href="#compounds"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-base font-medium text-slate-200 hover:text-cyan-400"
-          >
-            Compounds Catalog
+      {/* Mobile Menu */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-white/5 bg-[#0a0d14] px-6 py-6 space-y-4 text-sm font-medium">
+          <Link href="#bestsellers" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            Shop
           </Link>
-          <Link
-            href="#coa-lookup"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-base font-medium text-slate-200 hover:text-cyan-400"
-          >
-            Batch Verification (COA)
+          <Link href="#coa" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            COA
           </Link>
-          <Link
-            href="#standard"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-base font-medium text-slate-200 hover:text-cyan-400"
-          >
-            The EMC Standard
+          <Link href="#anatomy" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            About
           </Link>
-          <Link
-            href="#faq"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-base font-medium text-slate-200 hover:text-cyan-400"
-          >
-            Frequently Answered
+          <Link href="#process" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            Process
           </Link>
-          <div className="pt-4 border-t border-slate-800/80">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
-              <ShieldCheck className="w-4 h-4 text-cyan-400" />
-              <span>STRICTLY FOR LABORATORY INQUIRY</span>
-            </div>
+          <Link href="#difference" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            Why EMC
+          </Link>
+          <Link href="#faq" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+            FAQ
+          </Link>
+          <div className="pt-3 border-t border-white/5 text-xs font-mono text-slate-400">
+            Research use only · Analytical grade
           </div>
         </div>
       )}
