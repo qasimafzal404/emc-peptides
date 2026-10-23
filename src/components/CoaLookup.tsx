@@ -1,197 +1,305 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
-import { CERTIFICATES } from "@/data/products";
-import { Search, FileCheck, Download, CheckCircle, Shield, AlertCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, QrCode } from "lucide-react";
+
+interface CoaDocument {
+  id: string;
+  name: string;
+  lot: string;
+  testedDate: string;
+  purity: string;
+  netPeptide: string;
+  appearance: string;
+  vialHue: string;
+  retentionTime: string;
+}
+
+const COA_DATA: CoaDocument[] = [
+  {
+    id: "adamax",
+    name: "Adamax 1032 - 10mg",
+    lot: "EMC-ADX-1032",
+    testedDate: "10/14/2026",
+    purity: "99.54%",
+    netPeptide: "83.2%",
+    appearance: "Lyophilized white cake",
+    vialHue: "hue-rotate-[220deg]",
+    retentionTime: "14.28 min",
+  },
+  {
+    id: "ipamorelin",
+    name: "Ipamorelin - 10mg",
+    lot: "EMC-IPA-1002",
+    testedDate: "10/09/2026",
+    purity: "99.62%",
+    netPeptide: "84.1%",
+    appearance: "Lyophilized white cake",
+    vialHue: "hue-rotate-[130deg]",
+    retentionTime: "12.84 min",
+  },
+  {
+    id: "ghk-kpv",
+    name: "GHK-Cu / KPV - 70mg",
+    lot: "EMC-GKPV-70",
+    testedDate: "10/18/2026",
+    purity: "99.73%",
+    netPeptide: "81.9%",
+    appearance: "Lyophilized blue cake",
+    vialHue: "hue-rotate-[180deg]",
+    retentionTime: "15.12 min",
+  },
+  {
+    id: "tesamorelin",
+    name: "Tesamorelin - 5mg",
+    lot: "EMC-TESA-50",
+    testedDate: "10/04/2026",
+    purity: "99.41%",
+    netPeptide: "85.6%",
+    appearance: "Lyophilized white cake",
+    vialHue: "hue-rotate-[0deg]",
+    retentionTime: "16.45 min",
+  },
+  {
+    id: "bpc157",
+    name: "BPC-157 - 10mg",
+    lot: "EMC-BPC-10",
+    testedDate: "10/12/2026",
+    purity: "99.68%",
+    netPeptide: "86.0%",
+    appearance: "Lyophilized white cake",
+    vialHue: "hue-rotate-[320deg]",
+    retentionTime: "13.91 min",
+  },
+];
 
 export function CoaLookup() {
-  const [searchQuery, setSearchQuery] = useState("EMC-7402-A");
-  const [activeCert, setActiveCert] = useState(CERTIFICATES[0]);
-  const [hasSearched, setHasSearched] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const query = searchQuery.trim().toUpperCase();
-    const found = CERTIFICATES.find(
-      (c) => c.lot.toUpperCase().includes(query) || c.compound.toUpperCase().includes(query)
-    );
-    if (found) {
-      setActiveCert(found);
-      setHasSearched(true);
-    } else {
-      setActiveCert(null as any);
-      setHasSearched(true);
-    }
+  const prevCoa = () => {
+    setCurrentIndex((prev) => (prev === 0 ? COA_DATA.length - 1 : prev - 1));
   };
 
-  const handleQuickSelect = (lot: string) => {
-    setSearchQuery(lot);
-    const found = CERTIFICATES.find((c) => c.lot === lot);
-    if (found) setActiveCert(found);
+  const nextCoa = () => {
+    setCurrentIndex((prev) => (prev === COA_DATA.length - 1 ? 0 : prev + 1));
   };
+
+  const activeDoc = COA_DATA[currentIndex];
 
   return (
-    <section id="coa-lookup" className="py-20 lg:py-28 bg-[#090e17] border-y border-slate-800/80 relative">
+    <section id="coa" className="py-24 lg:py-32 bg-[#f4f1ea] text-[#11161d] overflow-hidden border-t border-[#e2dcd0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="max-w-3xl mb-12 space-y-3">
-          <div className="text-xs font-mono text-cyan-400 tracking-widest uppercase">
-            DOCUMENTATION INTEGRITY
+        {/* Section Header matching Screenshot 2 */}
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <div className="flex items-center justify-center gap-3">
+            <span className="w-8 h-[1.5px] bg-[#9a782a]" />
+            <span className="text-xs font-mono tracking-widest uppercase font-semibold text-[#9a782a]">
+              CERTIFICATE OF ANALYSIS
+            </span>
+            <span className="w-8 h-[1.5px] bg-[#9a782a]" />
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Every Lot, On Record.
+
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#11161d]">
+            Every Lot, <br className="sm:hidden" />
+            On Record<span className="text-[#9a782a]">.</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base">
-            Never accept undocumented compounds. Verify independent reverse-phase chromatography (RP-HPLC) and electrospray ionization mass spectrometry (ESI-MS) by entering your vial lot number.
+
+          <p className="text-sm sm:text-base text-[#4a5568] max-w-xl mx-auto font-normal">
+            Independent third-party HPLC chromatography and quantitative purity assays published for every production run.
           </p>
         </div>
 
-        {/* Search Bar + Quick Lot Pills */}
-        <div className="max-w-2xl mb-10 space-y-3">
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <div className="relative flex-1">
-              <Search className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Enter lot number (e.g. EMC-7402-A, EMC-8911-B)..."
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-500 outline-none font-mono"
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
-            >
-              Verify
-            </button>
-          </form>
+        {/* 3D Carousel / Fan-Out Container */}
+        <div className="relative max-w-5xl mx-auto flex items-center justify-center min-h-[580px] sm:min-h-[660px]">
+          
+          {/* Left Navigation Arrow */}
+          <button
+            onClick={prevCoa}
+            aria-label="Previous Certificate"
+            className="absolute left-2 sm:left-6 z-30 w-11 h-11 rounded-full bg-[#0d211a] hover:bg-[#1a4033] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 cursor-pointer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
 
-          {/* Quick presets */}
-          <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-400 font-mono">
-            <span>Sample Lots:</span>
-            {CERTIFICATES.slice(0, 4).map((c) => (
-              <button
-                key={c.lot}
-                type="button"
-                onClick={() => handleQuickSelect(c.lot)}
-                className={`px-2.5 py-1 rounded bg-slate-900 border transition-colors ${
-                  activeCert?.lot === c.lot
-                    ? "border-cyan-400 text-cyan-300"
-                    : "border-slate-800 hover:border-slate-700 text-slate-400"
-                }`}
-              >
-                {c.lot} ({c.compound})
-              </button>
-            ))}
+          {/* Right Navigation Arrow */}
+          <button
+            onClick={nextCoa}
+            aria-label="Next Certificate"
+            className="absolute right-2 sm:right-6 z-30 w-11 h-11 rounded-full bg-[#0d211a] hover:bg-[#1a4033] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 cursor-pointer"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Left Angled Ghost Sheet (Perspective depth) */}
+          <div className="hidden lg:block absolute left-8 w-[380px] h-[520px] bg-white/70 rounded-2xl border border-black/10 shadow-lg transform -rotate-6 scale-90 blur-[1px] opacity-60 pointer-events-none select-none p-6">
+            <div className="h-4 w-28 bg-slate-200 rounded mb-4" />
+            <div className="h-2 w-full bg-slate-100 rounded mb-2" />
+            <div className="h-2 w-3/4 bg-slate-100 rounded mb-6" />
+            <div className="h-28 w-full bg-slate-50 border border-slate-200 rounded mb-4" />
           </div>
+
+          {/* Right Angled Ghost Sheet (Perspective depth) */}
+          <div className="hidden lg:block absolute right-8 w-[380px] h-[520px] bg-white/70 rounded-2xl border border-black/10 shadow-lg transform rotate-6 scale-90 blur-[1px] opacity-60 pointer-events-none select-none p-6">
+            <div className="h-4 w-28 bg-slate-200 rounded mb-4" />
+            <div className="h-2 w-full bg-slate-100 rounded mb-2" />
+            <div className="h-2 w-3/4 bg-slate-100 rounded mb-6" />
+            <div className="h-28 w-full bg-slate-50 border border-slate-200 rounded mb-4" />
+          </div>
+
+          {/* Centerpiece Certificate Sheet matching Screenshot 2 */}
+          <div className="relative z-20 w-full max-w-[480px] bg-white rounded-2xl border border-black/15 shadow-2xl p-6 sm:p-8 space-y-5 transition-all duration-300">
+            
+            {/* Certificate Header */}
+            <div className="flex items-start justify-between border-b border-slate-200 pb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold text-xs font-mono">
+                  ILS
+                </div>
+                <div>
+                  <div className="text-xs font-bold tracking-tight text-slate-900 font-mono">
+                    EMC ANALYTICAL LABS
+                  </div>
+                  <div className="text-[9px] text-slate-500 font-mono">
+                    San Diego Facility · ISO/IEC 17025
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <span className="text-[10px] font-mono uppercase font-bold text-slate-400 block">
+                  Report ID
+                </span>
+                <span className="text-xs font-mono font-bold text-slate-900">
+                  {activeDoc.lot}
+                </span>
+              </div>
+            </div>
+
+            {/* Document Title & Pass Pill */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                  Certificate of Analysis
+                </h3>
+                <p className="text-xs font-mono text-slate-500">
+                  Sample: {activeDoc.name}
+                </p>
+              </div>
+
+              <span className="px-3 py-1 rounded-full bg-emerald-600 text-white font-mono text-[10px] font-bold tracking-wider flex items-center gap-1 shadow-xs">
+                <CheckCircle2 className="w-3 h-3" />
+                PASS
+              </span>
+            </div>
+
+            {/* Compound Specifications Box */}
+            <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px] font-mono">
+              <div>
+                <span className="text-slate-400 block text-[9px] uppercase">Lot Number</span>
+                <span className="font-semibold text-slate-800">{activeDoc.lot}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[9px] uppercase">Assayed Date</span>
+                <span className="font-semibold text-slate-800">{activeDoc.testedDate}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[9px] uppercase">Physical State</span>
+                <span className="font-semibold text-slate-800">{activeDoc.appearance}</span>
+              </div>
+              <div>
+                <span className="text-slate-400 block text-[9px] uppercase">Method</span>
+                <span className="font-semibold text-slate-800">RP-HPLC / ESI-MS</span>
+              </div>
+            </div>
+
+            {/* Analytical Results Table */}
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-semibold mb-1">
+                Purity, Identity &amp; Quantitation (HPLC)
+              </div>
+              <div className="border border-slate-200 rounded-xl overflow-hidden text-xs">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-100 text-[10px] font-mono text-slate-500 uppercase">
+                    <tr>
+                      <th className="p-2">Analyte</th>
+                      <th className="p-2">Specification</th>
+                      <th className="p-2">Result</th>
+                      <th className="p-2 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-[11px] font-mono">
+                    <tr className="bg-emerald-50/60 font-semibold text-emerald-950">
+                      <td className="p-2">HPLC Purity (214nm)</td>
+                      <td className="p-2 text-slate-600">&ge; 99.0%</td>
+                      <td className="p-2 text-emerald-700 font-bold">{activeDoc.purity}</td>
+                      <td className="p-2 text-right text-emerald-600 font-bold">Pass</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2 text-slate-700">Net Peptide Content</td>
+                      <td className="p-2 text-slate-500">Report Only</td>
+                      <td className="p-2 text-slate-800 font-medium">{activeDoc.netPeptide}</td>
+                      <td className="p-2 text-right text-emerald-600 font-bold">Pass</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2 text-slate-700">Identity (ESI-MS)</td>
+                      <td className="p-2 text-slate-500">Theoretical &plusmn; 1Da</td>
+                      <td className="p-2 text-slate-800 font-medium">Confirmed</td>
+                      <td className="p-2 text-right text-emerald-600 font-bold">Pass</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Realistic HPLC Chromatogram Curve Graphic */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-500">
+                <span>HPLC Chromatogram (Peak: {activeDoc.retentionTime})</span>
+                <span>214 nm Detection</span>
+              </div>
+              <div className="h-24 w-full bg-slate-50 rounded-xl border border-slate-200 p-2 relative flex items-end">
+                {/* SVG Chromatogram Curve with Single Sharp Analytical Peak */}
+                <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 300 70">
+                  <line x1="0" y1="65" x2="300" y2="65" stroke="#cbd5e1" strokeWidth="1" />
+                  <line x1="0" y1="35" x2="300" y2="35" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="3 3" />
+                  
+                  <path
+                    d="M 0 65 L 120 65 Q 140 65 147 10 Q 150 2 153 10 Q 160 65 180 65 L 300 65"
+                    fill="none"
+                    stroke="#0284c7"
+                    strokeWidth="1.8"
+                  />
+                  <circle cx="150" cy="5" r="3" fill="#0284c7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Verification Footer with QR Code Stamp */}
+            <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-[10px] font-mono text-slate-500">
+              <div className="flex items-center gap-2">
+                <QrCode className="w-6 h-6 text-slate-800" />
+                <div>
+                  <div className="font-bold text-slate-800">Tamper-evident Certificate</div>
+                  <div>Cryptographically signed verification</div>
+                </div>
+              </div>
+              <span className="text-[9px] text-slate-400">Page 1 of 1</span>
+            </div>
+
+          </div>
+
         </div>
 
-        {/* Certificate Inspection Display Card */}
-        {activeCert ? (
-          <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-cyan-500/30 shadow-2xl relative overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
-              {/* Left Details */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    <span>AUTHENTIC CERTIFICATE VERIFIED</span>
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">ID: {activeCert.lot}</span>
-                </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-1">
-                    {activeCert.compound} Analytical Profile
-                  </h3>
-                  <p className="text-xs text-slate-400 font-mono">
-                    Conducted by Analytical Laboratory Services · Testing protocol ASTM/ICH Q2(R1)
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-2">
-                  <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                    <div className="text-[10px] font-mono text-slate-400">HPLC PURITY</div>
-                    <div className="text-xl font-black text-cyan-400 font-mono">{activeCert.purity}</div>
-                    <div className="text-[10px] text-emerald-400 font-mono">&ge; 99.0% Spec Pass</div>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                    <div className="text-[10px] font-mono text-slate-400">ANALYSIS DATE</div>
-                    <div className="text-sm font-bold text-white font-mono mt-1">{activeCert.date}</div>
-                    <div className="text-[10px] text-slate-400 font-mono">Batch Certified</div>
-                  </div>
-
-                  <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800 col-span-2 sm:col-span-1">
-                    <div className="text-[10px] font-mono text-slate-400">TEST METHODOLOGY</div>
-                    <div className="text-xs font-semibold text-slate-200 mt-1 line-clamp-1">{activeCert.technique}</div>
-                    <div className="text-[10px] text-cyan-400 font-mono">Dual Confirmed</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 pt-2">
-                  <button
-                    onClick={() => alert(`Certificate PDF for ${activeCert.lot} opened in secure view.`)}
-                    className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold flex items-center gap-2 transition-colors border border-slate-700"
-                  >
-                    <Download className="w-4 h-4 text-cyan-400" />
-                    <span>Download Full Analytical PDF</span>
-                  </button>
-                  <span className="text-[11px] text-slate-500 font-mono">SHA-256 Verified Signature</span>
-                </div>
-              </div>
-
-              {/* Right: Chromatogram Graphical Representation */}
-              <div className="lg:col-span-5 bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3 border-b border-slate-800 pb-2">
-                  <span>RP-HPLC SPECTRAL TRACE</span>
-                  <span className="text-cyan-400">220 nm DETECTOR</span>
-                </div>
-
-                {/* SVG Simulated Peak Chromatogram */}
-                <div className="w-full h-36 relative flex items-end">
-                  <svg className="w-full h-full text-cyan-400" viewBox="0 0 300 100" fill="none">
-                    <path
-                      d="M 0,95 L 40,95 L 60,93 L 70,95 L 120,95 L 135,92 L 145,15 L 155,92 L 180,95 L 230,95 L 245,94 L 300,95"
-                      stroke="#00f0ff"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                    {/* Fill underneath peak */}
-                    <path
-                      d="M 120,95 L 135,92 L 145,15 L 155,92 L 180,95 Z"
-                      fill="rgba(0, 240, 255, 0.15)"
-                    />
-                    {/* Axis markings */}
-                    <line x1="0" y1="95" x2="300" y2="95" stroke="#334155" strokeWidth="1" />
-                    <line x1="145" y1="15" x2="145" y2="95" stroke="#00f0ff" strokeWidth="1" strokeDasharray="2 2" />
-                  </svg>
-                  <span className="absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-cyan-300 bg-slate-900/90 px-1.5 py-0.5 rounded border border-cyan-500/30">
-                    Peak RT: 8.42 min (Purity {activeCert.purity})
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mt-3 pt-2 border-t border-slate-900">
-                  <span>Flow: 1.0 mL/min</span>
-                  <span>Solvent: ACN / 0.1% TFA</span>
-                  <span>Integrity: 100% PASS</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        ) : (
-          <div className="p-8 rounded-2xl bg-slate-900/60 border border-slate-800 text-center space-y-3">
-            <AlertCircle className="w-8 h-8 text-amber-400 mx-auto" />
-            <h3 className="text-lg font-bold text-white">No Record Matched for "{searchQuery}"</h3>
-            <p className="text-xs text-slate-400 max-w-md mx-auto">
-              Please double check the lot number printed on your vial's label or choose one of the sample lots above.
-            </p>
-          </div>
-        )}
+        {/* View All COAs Button matching Screenshot 2 */}
+        <div className="text-center mt-12">
+          <a
+            href="#bestsellers"
+            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#0d211a] hover:bg-[#163b2f] text-white font-mono text-xs uppercase font-bold tracking-widest transition-all shadow-md hover:shadow-xl cursor-pointer"
+          >
+            VIEW ALL COAS
+          </a>
+        </div>
 
       </div>
     </section>

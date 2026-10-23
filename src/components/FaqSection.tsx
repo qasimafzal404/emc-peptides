@@ -34,45 +34,53 @@ export function FaqSection() {
   ];
 
   return (
-    <section id="faq" className="py-20 lg:py-28 bg-[#090c13] border-t border-white/5">
+    <section id="faq" className="py-24 lg:py-32 bg-[#f4f1ea] text-[#11161d] border-t border-[#e2dcd0]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="max-w-2xl mb-14 space-y-2">
-          <div className="text-xs font-mono text-cyan-400 tracking-widest uppercase">
-            Questions
+        <div className="max-w-2xl mb-14 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="w-8 h-[1.5px] bg-[#9a782a]" />
+            <span className="text-xs font-mono tracking-widest uppercase font-semibold text-[#9a782a]">
+              QUESTIONS
+            </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Answers, without hedging.
+
+          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#11161d]">
+            Answers, <br className="sm:hidden" />
+            without hedging<span className="text-[#9a782a]">.</span>
           </h2>
-          <p className="text-slate-400 text-sm">
+
+          <p className="text-sm sm:text-base text-[#4a5568] font-normal leading-relaxed">
             Six questions we are asked most. If you need anything else, our team answers in writing within one business day.
           </p>
         </div>
 
         {/* Accordions */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {faqs.map((f, idx) => {
             const isOpen = openIdx === idx;
             return (
               <div
                 key={idx}
-                className="aminohaus-card rounded-xl overflow-hidden transition-colors"
+                className="bg-white rounded-2xl border border-[#e2dcd0] overflow-hidden shadow-xs transition-all duration-200"
               >
                 <button
-                  type="button"
                   onClick={() => setOpenIdx(isOpen ? null : idx)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-semibold text-white hover:text-cyan-300 transition-colors"
+                  className="w-full text-left p-6 sm:p-7 flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-[#11161d] hover:text-[#9a782a] transition-colors cursor-pointer"
                 >
-                  <span className="text-sm sm:text-base">{f.q}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-cyan-400 shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
+                  <span>{f.q}</span>
+                  <div
+                    className={`w-8 h-8 rounded-full bg-[#f4f1ea] flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                      isOpen ? "rotate-180 bg-[#0d211a] text-white" : "text-[#11161d]"
                     }`}
-                  />
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
                 </button>
+
                 {isOpen && (
-                  <div className="px-6 pb-6 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/5 pt-4">
+                  <div className="px-6 pb-6 sm:px-7 sm:pb-7 text-xs sm:text-sm text-[#4a5568] leading-relaxed font-light border-t border-[#f0ede6] pt-4 animate-in fade-in duration-200">
                     {f.a}
                   </div>
                 )}
