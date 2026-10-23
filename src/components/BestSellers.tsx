@@ -3,266 +3,276 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Product } from "@/data/products";
-import { Plus, Check } from "lucide-react";
+import { ShoppingBag, Check } from "lucide-react";
 
 interface BestSellersProps {
   onAddToCart: (product: Product) => void;
   onQuickView: (product: Product) => void;
 }
 
-export const BEST_SELLERS_LIST: Product[] = [
-  {
-    id: "emc-tesa-5",
-    name: "Tesamorelin",
-    slug: "tesamorelin",
-    dosage: "5MG",
-    category: "metabolic",
-    categoryLabel: "Metabolic",
-    price: 74.00,
-    purity: "99.4%",
-    sequence: "Hexenoyl-Tyr-Ala-Asp-Ala-Ile-Phe-Thr-Asn-Ser-Tyr-Arg-Lys-Val-Leu-Gly-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Met-Ser-Arg-Gln-Gln-Gly-Glu-Ser-Asn-Gln-Glu-Arg-Gly-Ala-Arg-Ala-Arg-Leu-NH2",
-    molecularWeight: "5135.9 g/mol",
-    casNumber: "218949-48-5",
-    lotNumber: "EMC-7402-A",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Growth hormone-releasing factor analog synthesized with high chromatographic refinement.",
-    description: "Sterile lyophilized cake under argon atmosphere for metabolic signaling investigation.",
-  },
+interface BestSellerCardItem {
+  id: string;
+  name: string;
+  dosage: string;
+  price: number;
+  bgColor: string; // Pastel background hex matching the AminoHaus screenshots
+  hueShift?: string;
+  category: "metabolic" | "repair" | "cognitive" | "longevity";
+  purity: string;
+  description: string;
+  casNumber: string;
+  molecularWeight: string;
+  sequence: string;
+  lotNumber: string;
+}
+
+export const BEST_SELLERS_DATA: BestSellerCardItem[] = [
   {
     id: "emc-ipa-10",
-    name: "Ipamorelin",
-    slug: "ipamorelin-10mg",
+    name: "Ipamorelin 10mg",
     dosage: "10MG",
-    category: "metabolic",
-    categoryLabel: "Metabolic",
     price: 44.00,
+    bgColor: "#d5aba5", // Warm dusty rose (Image 2)
+    hueShift: "hue-rotate-[130deg]",
+    category: "metabolic",
     purity: "99.5%",
-    sequence: "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
-    molecularWeight: "711.9 g/mol",
+    description: "Selective pentapeptide growth hormone secretagogue.",
     casNumber: "170851-70-4",
+    molecularWeight: "711.9 g/mol",
+    sequence: "Aib-His-D-2-Nal-D-Phe-Lys-NH2",
     lotNumber: "EMC-IPA10-01",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Selective pentapeptide growth hormone secretagogue.",
-    description: "High-purity lyophilized synthetic secretagogue.",
   },
   {
     id: "emc-tesa-ipa",
     name: "Tesa / IPA 13/3mg",
-    slug: "tesa-ipa-13-3mg",
     dosage: "3MG",
-    category: "metabolic",
-    categoryLabel: "Metabolic",
     price: 84.99,
-    purity: "99.2%",
-    sequence: "Tesamorelin 13mg + Ipamorelin 3mg co-lyophilized blend",
+    bgColor: "#d39791", // Terracotta / clay red (Image 2)
+    hueShift: "hue-rotate-[155deg]",
+    category: "metabolic",
+    purity: "99.4%",
+    description: "Dual-action co-lyophilized growth-factor research blend.",
+    casNumber: "Co-formulated",
     molecularWeight: "5847.8 g/mol",
-    casNumber: "N/A (Co-formulated)",
+    sequence: "Tesamorelin 13mg + Ipamorelin 3mg co-lyophilized blend",
     lotNumber: "EMC-TIPA-03",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Dual-action co-lyophilized growth-factor research blend.",
-    description: "Formulated for synergistic GH pulse pathway modeling.",
   },
   {
     id: "emc-ghk-kpv",
     name: "GHK-Cu / KPV 50/20mg",
-    slug: "ghk-cu-kpv-50-20mg",
     dosage: "20MG",
-    category: "repair",
-    categoryLabel: "Repair & Recovery",
     price: 69.00,
+    bgColor: "#9eaec2", // Steel slate-blue (Image 2)
+    hueShift: "hue-rotate-[0deg]",
+    category: "repair",
     purity: "99.6%",
-    sequence: "GHK-Cu (50mg) + KPV (20mg)",
-    molecularWeight: "788.4 g/mol",
+    description: "Extracellular matrix and cytoprotective tripeptide blend.",
     casNumber: "Complex",
+    molecularWeight: "788.4 g/mol",
+    sequence: "GHK-Cu (50mg) + KPV (20mg)",
     lotNumber: "EMC-GKPV-02",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Extracellular matrix and cytoprotective tripeptide blend.",
-    description: "Dual tissue restoration and anti-inflammatory inquiry peptide.",
   },
   {
     id: "emc-adamax-10",
-    name: "Adamax 1032",
-    slug: "adamax-1032-10mg",
+    name: "Adamax 1032 10mg",
     dosage: "10MG",
-    category: "cognitive",
-    categoryLabel: "Cognitive",
     price: 29.99,
-    purity: "99.1%",
-    sequence: "N-acetyl Semax base with adamantane moiety",
-    molecularWeight: "1032.2 g/mol",
+    bgColor: "#cfc7d6", // Lavender / lilac (Image 2)
+    hueShift: "hue-rotate-[220deg]",
+    category: "cognitive",
+    purity: "99.2%",
+    description: "Enhanced synthetic ACTH(4-10) neurotrophic derivative.",
     casNumber: "Research only",
+    molecularWeight: "1032.2 g/mol",
+    sequence: "N-acetyl Semax base with adamantane moiety",
     lotNumber: "EMC-ADX-10",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Enhanced synthetic ACTH(4-10) neurotrophic derivative.",
-    description: "Investigated for BDNF and TrkB receptor modulation.",
   },
   {
     id: "emc-bac-water",
-    name: "Reconstitution solution",
-    slug: "reconstitution-solution-10ml",
+    name: "Reconstitution solution 10ml",
     dosage: "10ML",
-    category: "repair",
-    categoryLabel: "Solution",
     price: 14.99,
+    bgColor: "#889cb5", // Cool slate grey-blue (Image 3)
+    hueShift: "hue-rotate-[190deg]",
+    category: "repair",
     purity: "USP Grade",
-    sequence: "Sterile water containing 0.9% benzyl alcohol",
-    molecularWeight: "N/A",
+    description: "Bacteriostatic preservation medium for laboratory peptide reconstitution.",
     casNumber: "100-51-6",
+    molecularWeight: "108.1 g/mol",
+    sequence: "Sterile water containing 0.9% benzyl alcohol",
     lotNumber: "EMC-BAC-10",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Bacteriostatic preservation medium for laboratory peptide reconstitution.",
-    description: "USP Grade analytical solvent prepared with sterile micro-filtration.",
   },
   {
     id: "emc-5amino",
-    name: "5-Amino-1MQ",
-    slug: "5-amino-1mq-50mg",
+    name: "5-Amino-1MQ 50mg",
     dosage: "50MG",
-    category: "metabolic",
-    categoryLabel: "Metabolic",
     price: 49.99,
+    bgColor: "#849e9e", // Seafoam / sage slate (Image 3)
+    hueShift: "hue-rotate-[50deg]",
+    category: "metabolic",
     purity: "99.3%",
-    sequence: "1-Methylquinolin-1-ium-5-amine iodide",
-    molecularWeight: "286.1 g/mol",
+    description: "Selective small molecule NNMT inhibitor for cellular energy inquiry.",
     casNumber: "42464-96-0",
+    molecularWeight: "286.1 g/mol",
+    sequence: "1-Methylquinolin-1-ium-5-amine iodide",
     lotNumber: "EMC-1MQ-50",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "Selective small molecule NNMT (nicotinamide N-methyltransferase) inhibitor.",
-    description: "Investigated in cellular energy metabolism and NAD+ cycling pathways.",
   },
   {
     id: "emc-cjc-ipa",
     name: "CJC / IPA 10mg",
-    slug: "cjc-ipa-10mg",
     dosage: "10MG",
-    category: "metabolic",
-    categoryLabel: "Metabolic",
     price: 59.99,
+    bgColor: "#c18c88", // Dusty rose red (Image 3)
+    hueShift: "hue-rotate-[145deg]",
+    category: "metabolic",
     purity: "99.4%",
-    sequence: "CJC-1295 no DAC (5mg) + Ipamorelin (5mg)",
-    molecularWeight: "4079.8 g/mol",
+    description: "GHRH analogue with growth hormone releasing pentapeptide.",
     casNumber: "Co-lyophilized",
+    molecularWeight: "4079.8 g/mol",
+    sequence: "CJC-1295 no DAC (5mg) + Ipamorelin (5mg)",
     lotNumber: "EMC-CJIPA-10",
-    testedDate: "October 2026",
-    inStock: true,
-    shortDesc: "GHRH analogue with growth hormone releasing pentapeptide.",
-    description: "Standard laboratory reference co-agonist preparation.",
+  },
+  {
+    id: "emc-aod-5",
+    name: "AOD 5mg",
+    dosage: "5MG",
+    price: 49.99,
+    bgColor: "#8aa2a2", // Muted sage green (Image 3)
+    hueShift: "hue-rotate-[70deg]",
+    category: "metabolic",
+    purity: "99.1%",
+    description: "C-terminal fragment of human growth hormone (Tyr-hGH 177-191).",
+    casNumber: "221231-10-3",
+    molecularWeight: "1815.1 g/mol",
+    sequence: "Tyr-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe",
+    lotNumber: "EMC-AOD-05",
   },
 ];
 
 export function BestSellers({ onAddToCart, onQuickView }: BestSellersProps) {
   const [addedMap, setAddedMap] = useState<Record<string, boolean>>({});
 
-  const handleAdd = (p: Product) => {
-    onAddToCart(p);
-    setAddedMap((prev) => ({ ...prev, [p.id]: true }));
+  const handleAdd = (item: BestSellerCardItem) => {
+    // Map to generic product interface
+    const product: Product = {
+      id: item.id,
+      name: item.name,
+      slug: item.id,
+      dosage: item.dosage,
+      category: item.category,
+      categoryLabel: item.category,
+      price: item.price,
+      purity: item.purity,
+      sequence: item.sequence,
+      molecularWeight: item.molecularWeight,
+      casNumber: item.casNumber,
+      lotNumber: item.lotNumber,
+      testedDate: "October 2026",
+      inStock: true,
+      shortDesc: item.description,
+      description: item.description,
+    };
+
+    onAddToCart(product);
+    setAddedMap((prev) => ({ ...prev, [item.id]: true }));
     setTimeout(() => {
-      setAddedMap((prev) => ({ ...prev, [p.id]: false }));
+      setAddedMap((prev) => ({ ...prev, [item.id]: false }));
     }, 1500);
   };
 
   return (
-    <section id="bestsellers" className="py-20 lg:py-28 bg-[#07080b] border-t border-white/5">
+    <section id="bestsellers" className="py-16 sm:py-24 bg-[#f4f1ea] border-t border-[#e2dcd0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header matching AminoHaus */}
+        {/* Header directly matching Image 2 */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-          <div>
-            <div className="text-xs font-mono text-cyan-400 tracking-widest uppercase mb-1">
-              Most Requested.
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-[1.5px] bg-[#9a782a]" />
+              <span className="text-[11px] font-mono tracking-widest uppercase font-semibold text-[#9a782a]">
+                MOST REQUESTED.
+              </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#11161d]">
               Best Sellers
             </h2>
           </div>
+
           <a
-            href="#compounds"
-            className="text-xs font-mono text-slate-400 hover:text-white transition-colors underline underline-offset-4"
+            href="#bestsellers"
+            className="text-xs font-mono text-[#4a5568] hover:text-black transition-colors flex items-center gap-1 group"
           >
-            View all compounds &rarr;
+            <span>View all compounds</span>
+            <span className="group-hover:translate-x-1 transition-transform">―</span>
           </a>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {BEST_SELLERS_LIST.map((item) => {
-            const isTesamorelin = item.id === "emc-tesa-5";
+        {/* 4 Column Product Grid with Pastel Container Colors */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {BEST_SELLERS_DATA.map((item) => {
             const isAdded = addedMap[item.id];
 
             return (
               <div
                 key={item.id}
-                className="aminohaus-card rounded-xl p-4 sm:p-5 flex flex-col justify-between group relative"
+                className="flex flex-col justify-between group"
               >
                 <div>
-                  {/* Top Dosage Pill */}
-                  <div className="flex items-center justify-between mb-3 text-[11px] font-mono">
-                    <span className="text-slate-400">{item.categoryLabel}</span>
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 font-bold border border-white/10">
+                  {/* Colored Container with 3D Vial standing on it (Images 2 & 3) */}
+                  <div
+                    style={{ backgroundColor: item.bgColor }}
+                    onClick={() => onQuickView(item as any)}
+                    className="w-full aspect-[1/1.05] rounded-2xl flex items-center justify-center p-6 mb-4 cursor-pointer relative overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1"
+                  >
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      <Image
+                        src="/emc-tesamorelin.png"
+                        alt={item.name}
+                        width={180}
+                        height={180}
+                        className={`object-contain max-h-[160px] filter drop-shadow-[0_15px_20px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:scale-105 ${item.hueShift || ""}`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    onClick={() => onQuickView(item as any)}
+                    className="font-bold text-base text-[#11161d] hover:text-[#0d211a] transition-colors cursor-pointer line-clamp-1 mb-2"
+                  >
+                    {item.name}
+                  </h3>
+
+                  {/* Dosage Pill Tag */}
+                  <div className="mb-2">
+                    <span className="inline-block px-3 py-1 rounded-full bg-[#0d211a] text-white text-[10px] font-mono font-bold tracking-wider">
                       {item.dosage}
                     </span>
                   </div>
 
-                  {/* Thumbnail / 3D Vial */}
-                  <div
-                    onClick={() => onQuickView(item)}
-                    className="w-full aspect-[4/3] rounded-lg bg-[#0a0d14] border border-white/5 flex items-center justify-center p-3 mb-4 cursor-pointer group-hover:border-cyan-500/30 transition-all overflow-hidden relative"
-                  >
-                    {isTesamorelin ? (
-                      <Image
-                        src="/emc-tesamorelin.png"
-                        alt={item.name}
-                        width={140}
-                        height={140}
-                        className="object-contain max-h-[120px] filter drop-shadow-[0_10px_20px_rgba(0,240,255,0.25)] group-hover:scale-105 transition-transform"
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center text-center space-y-1">
-                        <div className="w-10 h-14 rounded-md border border-cyan-500/20 bg-cyan-950/20 flex flex-col items-center justify-between p-1.5 shadow-inner">
-                          <span className="text-[7px] font-mono text-cyan-400 font-bold">EMC</span>
-                          <span className="text-[7px] font-mono text-slate-400">{item.dosage}</span>
-                        </div>
-                        <span className="text-[9px] font-mono text-slate-500">{item.purity}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Title & Price */}
-                  <h3
-                    onClick={() => onQuickView(item)}
-                    className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors cursor-pointer line-clamp-1"
-                  >
-                    {item.name}
-                  </h3>
-                  <div className="text-base font-extrabold font-mono text-slate-100 mt-1">
+                  {/* Price */}
+                  <div className="text-base font-bold text-[#11161d] font-mono mb-4">
                     ${item.price.toFixed(2)}
                   </div>
                 </div>
 
-                {/* Add to Cart Button matching AminoHaus */}
+                {/* Dark Pill "Add to cart" Button (matching Image 2 & 3) */}
                 <button
                   onClick={() => handleAdd(item)}
-                  className={`mt-4 w-full py-2.5 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                  className={`w-full py-3 rounded-full text-xs font-semibold tracking-wide transition-all flex items-center justify-center gap-2 shadow-sm ${
                     isAdded
-                      ? "bg-emerald-500 text-white"
-                      : "bg-slate-900 hover:bg-white hover:text-slate-950 text-slate-200 border border-white/10"
+                      ? "bg-emerald-700 text-white"
+                      : "bg-[#0d211a] hover:bg-[#16382c] text-white"
                   }`}
                 >
                   {isAdded ? (
                     <>
                       <Check className="w-3.5 h-3.5" />
-                      <span>Added to cart</span>
+                      <span>Added</span>
                     </>
                   ) : (
                     <>
-                      <Plus className="w-3.5 h-3.5" />
+                      <ShoppingBag className="w-3.5 h-3.5" />
                       <span>Add to cart</span>
                     </>
                   )}

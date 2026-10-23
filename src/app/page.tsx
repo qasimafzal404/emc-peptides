@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { TopTicker } from "@/components/TopTicker";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { BestSellers, BEST_SELLERS_LIST } from "@/components/BestSellers";
+import { BestSellers } from "@/components/BestSellers";
 import { AnatomySection } from "@/components/AnatomySection";
 import { JustAdded } from "@/components/JustAdded";
 import { ProcessSteps } from "@/components/ProcessSteps";
@@ -17,11 +17,12 @@ import { ClosingCta } from "@/components/ClosingCta";
 import { Footer } from "@/components/Footer";
 import { CartDrawer, CartItem } from "@/components/CartDrawer";
 import { QuickViewModal } from "@/components/QuickViewModal";
-import { Product } from "@/data/products";
+import { FloatingEmailButton } from "@/components/FloatingEmailButton";
+import { Product, PRODUCTS } from "@/data/products";
 
 export default function Home() {
   const [cartItems, setCartItems] = useState<CartItem[]>([
-    { product: BEST_SELLERS_LIST[0], quantity: 1 }, // Default: 1x Tesamorelin 5MG
+    { product: PRODUCTS[0], quantity: 1 }, // Default: 1x Tesamorelin 5MG
   ]);
   const [cartOpen, setCartOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -72,7 +73,7 @@ export default function Home() {
           onExplore={() => {
             document.getElementById("bestsellers")?.scrollIntoView({ behavior: "smooth" });
           }}
-          onAddToCart={() => handleAddToCart(BEST_SELLERS_LIST[0])}
+          onAddToCart={() => handleAddToCart(PRODUCTS[0])}
         />
 
         {/* 4. Most Requested. / Best Sellers */}
@@ -131,6 +132,9 @@ export default function Home() {
         onClose={() => setQuickViewProduct(null)}
         onAddToCart={handleAddToCart}
       />
+
+      {/* Floating Bottom-Left Email Updates Button (AminoHaus Style) */}
+      <FloatingEmailButton />
     </div>
   );
 }

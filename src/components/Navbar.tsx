@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   cartCount: number;
@@ -10,96 +10,100 @@ interface NavbarProps {
 }
 
 export function Navbar({ cartCount, onOpenCart }: NavbarProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#07080b]/90 backdrop-blur-md border-b border-white/5">
+    <header className="sticky top-0 z-40 w-full bg-[#0d211a] text-white border-b border-emerald-950/60 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
-              EMC PEPTIDES
+          {/* Logo matching AminoHaus font style */}
+          <Link href="/" className="flex items-center gap-1 group">
+            <span className="text-2xl sm:text-[26px] font-bold tracking-tight text-white group-hover:text-amber-400 transition-colors lowercase">
+              emc peptides
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00f0ff]" />
           </Link>
 
-          {/* Desktop Links (Shop, COA, About, Partner Program, Contact) */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <Link href="#bestsellers" className="hover:text-white transition-colors">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium text-slate-200">
+            <Link href="#bestsellers" className="hover:text-amber-400 transition-colors">
               Shop
             </Link>
-            <Link href="#coa" className="hover:text-white transition-colors">
+            <Link href="#coa" className="hover:text-amber-400 transition-colors">
               COA
             </Link>
-            <Link href="#anatomy" className="hover:text-white transition-colors">
+            <Link href="#anatomy" className="hover:text-amber-400 transition-colors">
               About
             </Link>
-            <Link href="#process" className="hover:text-white transition-colors">
-              Process
+            <Link href="#process" className="hover:text-amber-400 transition-colors">
+              Partner Program
             </Link>
-            <Link href="#difference" className="hover:text-white transition-colors">
-              Why EMC
-            </Link>
-            <Link href="#faq" className="hover:text-white transition-colors">
-              FAQ
+            <Link href="#faq" className="hover:text-amber-400 transition-colors">
+              Contact
             </Link>
           </nav>
 
-          {/* Right Status & Cart */}
-          <div className="flex items-center gap-5">
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-white/10 text-xs font-mono text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>Research use only</span>
-            </div>
-
-            {/* Cart Button */}
+          {/* Right Action Icons (Search, User, Cart) */}
+          <div className="flex items-center gap-6">
             <button
-              onClick={onOpenCart}
-              className="relative flex items-center gap-2 text-sm font-medium text-slate-200 hover:text-cyan-400 transition-colors p-2"
-              aria-label="View Cart"
+              aria-label="Search"
+              onClick={() => {
+                document.getElementById("bestsellers")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="text-slate-300 hover:text-white transition-colors"
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="font-mono text-xs font-bold text-cyan-400">{cartCount}</span>
+              <Search className="w-5 h-5" />
             </button>
 
-            {/* Mobile Toggle */}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 text-slate-400 hover:text-white"
+              aria-label="User Account"
+              onClick={() => alert("EMC Peptides Client Portal: Research accounts verified upon first order placement.")}
+              className="text-slate-300 hover:text-white transition-colors hidden sm:block"
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <User className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={onOpenCart}
+              aria-label="Shopping Cart"
+              className="relative text-slate-300 hover:text-white transition-colors flex items-center"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-amber-400 text-slate-950 font-bold text-[10px] flex items-center justify-center font-mono">
+                {cartCount}
+              </span>
+            </button>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-slate-300 hover:text-white"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
 
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-white/5 bg-[#0a0d14] px-6 py-6 space-y-4 text-sm font-medium">
-          <Link href="#bestsellers" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+      {/* Mobile Nav Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[#091813] border-t border-emerald-950 px-6 py-6 space-y-4 text-sm font-medium">
+          <Link href="#bestsellers" onClick={() => setMobileMenuOpen(false)} className="block text-slate-200 hover:text-amber-400">
             Shop
           </Link>
-          <Link href="#coa" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+          <Link href="#coa" onClick={() => setMobileMenuOpen(false)} className="block text-slate-200 hover:text-amber-400">
             COA
           </Link>
-          <Link href="#anatomy" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
+          <Link href="#anatomy" onClick={() => setMobileMenuOpen(false)} className="block text-slate-200 hover:text-amber-400">
             About
           </Link>
-          <Link href="#process" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
-            Process
+          <Link href="#process" onClick={() => setMobileMenuOpen(false)} className="block text-slate-200 hover:text-amber-400">
+            Partner Program
           </Link>
-          <Link href="#difference" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
-            Why EMC
+          <Link href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-slate-200 hover:text-amber-400">
+            Contact
           </Link>
-          <Link href="#faq" onClick={() => setMobileOpen(false)} className="block text-slate-300 hover:text-white">
-            FAQ
-          </Link>
-          <div className="pt-3 border-t border-white/5 text-xs font-mono text-slate-400">
-            Research use only · Analytical grade
-          </div>
         </div>
       )}
     </header>
